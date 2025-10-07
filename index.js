@@ -31,6 +31,7 @@ function createTimeInEvent(dateStamp){
     })
     return this
 }
+const time=createEmployeeRecord.call(empo1, '2005-05-22 800')
 
 const withContexTimeInEvents = createTimeInEvent.call(empo2[0], '2005-05-22 800')
 // console.log(withContexTimeInEvents)
@@ -47,17 +48,22 @@ function createTimeOutEvent(dateStamp){
 }
 
 const withContexTimeOutEvents = createTimeOutEvent.call(empo2[0], '2005-05-22 1800')
-
+// console.log(withContexTimeOutEvents)
 
 function hoursWorkedOnDate(dateStamp){
     const timeIn = this.timeInEvents.find(item=>item.date===dateStamp)
     const timeOut = this.timeOutEvents.find(item=>item.date===dateStamp)
     return (timeOut.hour-timeIn.hour)/100
+    
 }
 
 function wagesEarnedOnDate(dateStamp){
-    return hoursWorkedOnDate(dateStamp)*this.payPerHour
+    return hoursWorkedOnDate.call(this, dateStamp)*this.payPerHour
 }
+
+const wagesOnDate = wagesEarnedOnDate.call(withContexTimeOutEvents, '2005-05-22')
+
+// console.log(wagesOnDate)
 
 // function allWagesFor(){
 //     let wage = 0
@@ -67,14 +73,22 @@ function wagesEarnedOnDate(dateStamp){
 //     return wage
 // }
 
-function findEmployeeByFirstName(srcArray, firstName){
-    srcArray.forEach(item=>{
-        if(item.firstName===firstName){
-            return item
-        }else{
-            return undefined
+function findEmployeeByFirstName(collection, firstNameString){
+    for(const obj of collection){
+        if(obj.firstName===firstNameString){
+            return obj
         }
-    })
+    }
+}
+
+// console.log(findEmployeeByFirstName(empo2, 'Jack'))
+
+function calculatePayroll(collection){
+    let payroll=0
+    for(const obj of collection){
+        payroll+=allWagesFor.call(obj)
+    }
+    return payroll
 }
 
 /*
